@@ -88,4 +88,7 @@ if __name__ == '__main__':
     model = train_model(model, loss, metrics,  optimizer, num_epochs)
     if not os.path.exists('models'):
         os.mkdir('models')
+    model_json = model.to_json()
+    with open('models/model.json', 'w') as json_file:
+        json_file.write(model_json)
     model.save_weights('models/model.h5')
