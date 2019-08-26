@@ -55,7 +55,7 @@ if __name__=="__main__":
     with tf.Session() as sess:  
         init = tf.global_variables_initializer()
         sess.run(init)  
-        steps = 10000  
+        steps = 1000  
         for i in range(steps): 
             _,cross_entropy_,accuracy_,batch_images_,batch_labels_,loss_summary_,acc_summary_,image_summary_ = sess.run([train_step,cross_entropy,accuracy,batch_images,batch_labels,loss_summary,acc_summary,image_summary])
             if i % in_steps == 0 :
@@ -81,4 +81,8 @@ if __name__=="__main__":
                     if k == ord('q'):
                         break
 
-
+	#print sess.graph_def
+	frozen_graph_def = tf.graph_util.convert_variables_to_constants(sess,sess.graph_def,output_node_names=["Softmax"])
+	#print(frozen_graph_def)
+	with open('model.pb', 'wb') as f:
+		f.write(frozen_graph_def.SerializeToString())
